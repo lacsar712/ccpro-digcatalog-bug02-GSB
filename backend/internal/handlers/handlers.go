@@ -132,7 +132,7 @@ func (h *Handler) UpdateSite(c *gin.Context) {
 func (h *Handler) DeleteSite(c *gin.Context) {
 	id, _ := strconv.Atoi(c.Param("id"))
 	var count int64
-	h.DB.Unscoped().Model(&models.Unit{}).Where("site_id = ?", id).Count(&count)
+	h.DB.Model(&models.Unit{}).Where("site_id = ?", id).Count(&count)
 	if count > 0 {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "该工地下仍有探方，无法删除"})
 		return
@@ -415,7 +415,7 @@ func (h *Handler) DeleteFind(c *gin.Context) {
 func (h *Handler) Overview(c *gin.Context) {
 	var siteCount, unitCount, findCount int64
 	h.DB.Model(&models.Site{}).Count(&siteCount)
-	h.DB.Unscoped().Model(&models.Unit{}).Count(&unitCount)
+	h.DB.Model(&models.Unit{}).Count(&unitCount)
 	h.DB.Model(&models.Find{}).Count(&findCount)
 
 	type typeStat struct {
